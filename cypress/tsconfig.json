@@ -1,9 +1,23 @@
 {
-  "extends": "../tsconfig.json",
-    "compilerOptions": {
-      "target": "es5",
-      "lib": ["es5", "dom"],
-      "types": ["cypress", "node"]
-    },
-    "include": ["**/*.ts"]
+  "compilerOptions": {
+    "target": "ES5",
+    "lib": ["es5", "dom"],
+    "moduleResolution": "node",
+    "allowJs": false,
+    "checkJs": false,
+    "jsx": "react-jsx",          // React 17+ JSX Transform
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "types": ["cypress", "mocha"] // Include Cypress and Mocha types
+  },
+  "include": [
+    "support/**/*.ts",
+    "integration/**/*.ts",
+    "commands.d.ts",
+    "**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

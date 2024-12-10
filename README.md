@@ -1,143 +1,190 @@
-# 19 CI-CD: GitHub Actions CI/CD Setup
+# Full-Stack Quiz Application
 
-## Your Task
+This is a full-stack application that allows users to take a quiz. The frontend is built with **React 18** and the backend is powered by **Node.js** (Express). The project includes automated tests using **Cypress** for end-to-end testing and **component testing**.
 
-As applications scale and develop, developers want to ensure that certain quality checks are met prior to merging to important branches; thus, you'll want to familiarize yourself with Continuous Integration (CI) and Continuous Deployment (CD) that are common practices used to ensure consistency, quality, and deployment of latest code once all checks have been met and merged to `main`.
+## Features
 
-Your task is to create a CI/CD pipeline using GitHub Actions to run the component tests via Cypress when a Pull Request is made to the `develop` branch, and the application is deployed when code is merged from `develop` to the `main` branch.
+- **Frontend**: Built with React 18, the user can take a quiz, answer questions, and see their score.
+- **Backend**: A simple API built with Node.js and Express to serve questions for the quiz.
+- **Testing**: End-to-end tests and component tests using Cypress.
+- **Deployment**: Can be deployed on platforms like **Render** or **Heroku**.
 
-## User Story
+## Table of Contents
 
-```md
-AS A developer looking to integrate a pipeline in a codebase for continuous integration and deployment, 
-I WANT to create a GitHub Action that will follow best practices by running test cases when a Pull Request is made to the develop branch
-SO THAT I can ensure that all code integrations are clean and pass the proper requirements.
+1. [Technologies](#technologies)
+2. [Installation](#installation)
+3. [Usage](#usage)
+4. [Testing](#testing)
+5. [Deployment](#deployment)
+6. [Contributing](#contributing)
+7. [License](#license)
 
-AS A developer looking to deploy the application automatically to Render when code is merged from develop to main,
-I WANT to create a GitHub Action that will run when the code is merged to main and automatically deploys to Render
-SO THAT the application is constantly updated when major releases are made to the main branch.
+## Technologies
+
+- **Frontend**: React 18
+- **Backend**: Node.js, Express
+- **Testing**: Cypress
+- **Deployment**: Render/Heroku
+- **Styling**: CSS (custom)
+- **Database**: Not used in this project (API serves static data for quiz questions)
+
+## Installation
+
+### Prerequisites
+
+Make sure you have the following installed:
+
+- **Node.js**: [Download Node.js](https://nodejs.org/en/download/)
+- **npm** (Node Package Manager): Comes with Node.js
+- **Git**: [Download Git](https://git-scm.com/)
+
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/yourusername/full-stack-quiz-app.git
+cd full-stack-quiz-app
 ```
 
-## Acceptance Criteria
+### 2. Install dependencies for both the frontend and backend
 
-```md
-GIVEN a fullstack application for a web developer,
-WHEN I upload new features to the application
-THEN I should be making Pull Requests to a develop branch first
-WHEN I create a Pull Request to a develop branch
-THEN I should be executing a GitHub Action that checks the Cypress component tests
-WHEN I see that the tests pass on GitHub Action
-THEN I should see those test results on GitHub Action and merge the code
-WHEN I push the code from the develop branch to the main branch
-THEN I should see that another GitHub Action triggers and should automatically deploy to Render
+Run the following commands in the root folder of the project:
+
+- **Install backend dependencies**:
+
+```bash
+cd server
+npm install
 ```
 
-## Mock-Up
+- **Install frontend dependencies**:
 
-Your GitHub Actions for tests should look similar to the image below:
+```bash
+cd client
+npm install
+```
 
-![GitHub Actions Cypress Test.](./Assets/19-Actions-Cypress-Tests.png)
+### 3. Set up environment variables
 
-Your GitHub Actions for deployments should look similar to the image below:
+In the backend (`server` folder), create a `.env` file for any necessary environment variables (e.g., API keys, database URLs).
 
-![GitHub Actions Render Deploy.](./Assets/19-Actions-Render-Deploy.png)
+Example `.env` for the backend:
 
-## Getting Started
+```env
+PORT=5000
+```
 
-You'll first upload the content inside the `Develop` folder to a GitHub Repository. 
+For the frontend, ensure your API endpoint in React points to the correct backend URL. This can be configured in the code directly or through environment variables.
 
-You'll then deploy the application via [Render and MongoDB](https://coding-boot-camp.github.io/full-stack/mongodb/deploy-with-render-and-mongodb-atlas).
+## Usage
 
-Once you see the application has been deployed, you'll navigate to the Settings option and turn off Auto-Deploy.
+### 1. Run the development server
 
-![Render image of auto deploy and hook](./Assets/19-Render-Settings.png)
+To run the frontend and backend locally, follow these steps:
 
-Copy the `Deploy hook` URL as you will need it to properly configure GitHub Actions to deploy to Render.
+- **Start the backend (Node.js/Express)**:
 
-Next, create a `develop` branch (either on GitHub directly or via command-line) where all feature branches will be merged to.
+```bash
+cd server
+npm start
+```
 
-> **note** Your feature branches should always be merged to the `develop` branch. Only the `develop` branch should be merged to the `main` branch.
+- **Start the frontend (React)**:
 
-You will want to have two separate `YAML` files: one configured to execute GitHub Actions for tests when a Pull Request is made to the `develop` branch and the other configured to execute GitHub Actions to automatically deploy to Render when `develop` is merged to `main` branch.
+```bash
+cd client
+npm start
+```
 
-Use the following resources below:
+The React app will be available at [http://localhost:3000](http://localhost:3000) and the backend at [http://localhost:5000](http://localhost:5000).
 
-Resources:
+### 2. Run the production build
 
-* [Render Deploy Hooks](https://docs.render.com/deploy-hooks)
+- **For the backend**:
+  In your backend folder (`server`), run the following:
 
-* [Render API Key](https://docs.render.com/api)
+  ```bash
+  npm run build
+  npm start
+  ```
 
-* [GitHub Repo Secrets](https://docs.github.com/en/actions/security-guides/using-secrets-in-github-actions)
+- **For the frontend**:
+  In your frontend folder (`client`), run the following:
 
-* [Main and Develop Branches](https://www.atlassian.com/git/tutorials/comparing-workflows/gitflow-workflow)
+  ```bash
+  npm run build
+  serve -s build
+  ```
 
-## Grading Requirements
+The app will be available in production mode.
 
-> **note** If a Challenge assignment submission is marked as “0”, it is considered incomplete and will not count toward your graduation requirements. Examples of incomplete submissions include the following:
->
-> * A repository that has no code
->
-> * A repository that includes a unique name but nothing else
->
-> * A repository that includes only a README file but nothing else
->
-> * A repository that only includes starter code
+## Testing
 
-This Challenge is graded based on the following criteria:
+The project uses **Cypress** for testing. You can run Cypress in both **component testing** and **end-to-end testing** modes.
 
-### Deployment: 32%
+### 1. Run Cypress component tests
 
-* Application deployed at live URL.
+For running **component tests** (React components):
 
-* Application loads with no errors.
+```bash
+cd cypress
+npx cypress open  # Opens the Cypress UI to run the tests
+```
 
-* Application GitHub URL submitted.
+### 2. Run Cypress end-to-end tests
 
-* GitHub repository contains application code.
+For **end-to-end tests**, you can run the following:
 
-### Technical Acceptance Criteria: 40%
+```bash
+npx cypress open
+```
 
-* Satisfies all of the preceding acceptance criteria plus the following:
+Or run the tests headlessly:
 
-  * The GitHub repository must have both a `main` branch and a `develop` branch and use `feature` branches to submit Pull Requests.
+```bash
+npx cypress run
+```
 
-  * A GitHub Action must trigger when a Pull Request is submitted to a `develop` branch and the Action must execute the Cypress component tests.
+## Deployment
 
-  * All Cypress component tests must pass.
+### 1. Deploying to Render (Frontend + Backend)
 
-  * A GitHub Action must trigger when a Pull Request is submitted and merged to the `main` branch and the Action must automatically deploy the application to Render.
+To deploy the app to **Render**, follow these steps:
 
-  * The application must be deployed to Render.
+1. Go to [Render](https://render.com) and sign up/sign in.
+2. Create a **new web service** for both the frontend (React) and backend (Node.js).
+3. Link your GitHub repository to Render.
+4. For the **frontend** service, set the **build command** to `npm run build` and the **start command** to `serve -s build` (assuming you have `serve` installed for serving your React app).
+5. For the **backend** service, set the **build command** to `npm install` and the **start command** to `npm start`.
+6. Deploy the services and connect them to your domain.
 
-### Application Quality: 15%
+Once deployed, Render will provide you with a live URL for both the **frontend** and **backend**.
 
-* User experience is intuitive and easy to navigate.
+### 2. Deploying the Backend to Heroku (if you prefer)
 
-* User interface style is clean and polished.
+If you're deploying only the backend to **Heroku**:
 
-* Application resembles the mock-up functionality provided in Challenge instructions.
+1. Go to [Heroku](https://heroku.com) and create a new app.
+2. Link your **GitHub repository** to the app.
+3. In your **`package.json`**, ensure that the start script is correct:
 
-### Repository Quality: 13%
+   ```json
+   "scripts": {
+     "start": "node server.js"
+   }
+   ```
 
-* Repository has a unique name.
+4. Deploy the backend and connect it to your frontend (if hosted separately).
 
-* Repository follows best practices for file structure and naming conventions.
+## Contributing
 
-* Repository follows best practices for class/id naming conventions, indentation, quality comments, etc.
+If you'd like to contribute to this project, follow these steps:
 
-* Repository contains multiple descriptive commit messages.
+1. Fork the repository.
+2. Create a new branch for your feature or bug fix (`git checkout -b feature-name`).
+3. Commit your changes (`git commit -am 'Add new feature'`).
+4. Push your branch to GitHub (`git push origin feature-name`).
+5. Open a pull request.
 
-* Repository contains high-quality README file with description, screenshot, and link to deployed application.
+## License
 
-## Review
-
-You are required to submit BOTH of the following for review:
-
-* The URL of the functional, deployed application.
-
-* The URL of the GitHub repository, with a unique name and a README that describes the project.
-
----
-
-© 2024 edX Boot Camps LLC. Confidential and Proprietary. All Rights Reserved.
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

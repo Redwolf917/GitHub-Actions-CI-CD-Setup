@@ -1,30 +1,81 @@
-name: Challenge 20 Module - Check Tests to Develop
+name: CI - Cypress Tests and Server Tests
 
-# Run tests for PRs to Develop branch
 on:
   pull_request:
     branches:
-      - develop # Run tests for PRs against develop branch
+      - develop
 
 jobs:
-  test-runner:
+  cypress-tests:
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [18.x, 20.x, 22.x]
+
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-      - name: CI and CD using Node ${{ matrix.node-version }}
-        uses: actions/setup-node@v4
-        with:
-          node-version: ${{ matrix.node-version }}
-          cache: 'npm'
-      - name: install dependencies
-        run: npm ci
-      - name: Cypress run component tests
-        uses: cypress-io/github-action@v6
-        with:
-          build: npm run build
-          start: npm run start
-          component: true #Should run Component testing
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Cache node_modules
+      uses: actions/cache@v2
+      with:
+        path: ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Cypress tests
+      run: npx cypress run
+      env:
+        CYPRESS_RECORD_KEY: ${{ secrets.CYPRESS_RECORD_KEY }}
+
+    - name: Upload Cypress test results
+      if: always()
+      uses: actions/upload-artifact@v2
+      with:
+        name: cypress-test-results
+        path: cypress/results
+
+  client-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Run Client tests
+      run: npm run test
+
+  server-tests:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build the server
+      run: npm run build
+
+    - name: Run server tests
+      run: npm run test

@@ -135,3 +135,10 @@ dist
 cypress/videos
 cypress/screenshots
 cypress/reports
+
+# Ignore compiled JS files from TypeScript
+**/*.js
+**/*.jsx
+
+# Ignore Cypress test result files (optional)
+cypress/results
